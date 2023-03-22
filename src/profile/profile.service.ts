@@ -24,6 +24,7 @@ export class ProfileService {
       where: { followerId: currentUserId, followingId: user.id },
     });
 
+    console.log(`LOG`);
     return {
       ...user,
       following: !!follow,
