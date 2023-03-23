@@ -8,8 +8,8 @@ import {
 } from '@app/user/dto/user.dto.create';
 import { UserEntity } from '@app/user/user.entity';
 import { Repository } from 'typeorm';
-import JwtUtils from '@app/shared/utils/utils.jwt';
-import UtilsPassword from '@app/shared/utils/utils.password';
+import JwtUtils from '@app/shared/utils/jwt.util';
+import UtilsPassword from '@app/shared/utils/password.util';
 
 @Injectable()
 export class UserService {

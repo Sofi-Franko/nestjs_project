@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
 } from 'typeorm';
-import UtilsPassword from '@app/shared/utils/utils.password';
+import UtilsPassword from '@app/shared/utils/password.util';
 import { ArticleEntity } from '@app/article/article.entity';
 
 @Entity({ name: 'users' })

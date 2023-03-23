@@ -2,7 +2,7 @@ import { UserEntity } from '@app/user/user.entity';
 import { JWT_SECRET } from '@app/config';
 import { sign } from 'jsonwebtoken';
 
-class UtilsJwt {
+class JwtUtil {
   generateUserJWT(user: UserEntity): string {
     return sign(
       {
@@ -15,4 +15,4 @@ class UtilsJwt {
   }
 }
 
-export default new UtilsJwt();
+export default new JwtUtil();

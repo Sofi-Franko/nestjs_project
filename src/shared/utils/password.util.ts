@@ -2,7 +2,7 @@ import { hash, compare } from 'bcrypt';
 
 const DEFAULT_SALT = 10;
 
-class UtilsPassword {
+class PasswordUtil {
   async hash(pass: string): Promise<string> {
     return hash(pass, DEFAULT_SALT);
   }
@@ -12,4 +12,4 @@ class UtilsPassword {
   }
 }
 
-export default new UtilsPassword();
+export default new PasswordUtil();

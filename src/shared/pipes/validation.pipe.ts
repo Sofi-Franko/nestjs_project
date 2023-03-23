@@ -11,14 +11,11 @@ import { validate } from 'class-validator';
 
 @Injectable()
 export class BackendValidationPipe implements PipeTransform {
-  // TODO implement {whiteList} as it was in common ValidationPipe()
-
   async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
     const object = plainToClass(metadata.metatype, value);
-    console.log(`the-------------------> object`, object);
-    const errors = await validate(object);
+    const errors = await validate(object, { whitelist: true });
 
-    if (errors.length) return value;
+    if (!errors.length) return object;
 
     throw new HttpException(
       { errors: this.formatErrors(errors) },

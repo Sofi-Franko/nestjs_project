@@ -44,7 +44,4 @@ export class ArticleEntity {
   // eager -> always load author for Article
   @ManyToOne(() => UserEntity, (user) => user.articles, { eager: true })
   author: UserEntity;
-
-  //TODO:
-  // favorited
 }
