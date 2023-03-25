@@ -91,24 +91,24 @@ export class ArticleController {
     return this.articleService.buildArticleResponse(art);
   }
 
-  @Post(':slug/favourite')
+  @Post(':slug/favorite')
   @UseGuards(UserGuardAuth)
-  async addToFavourites(
+  async addToFavorites(
     @User('id') userId: string,
     @Param('slug') slug: string,
   ): Promise<IArticleCommonResponse> {
-    const art = await this.articleService.addToFavourites(slug, userId);
+    const art = await this.articleService.addToFavorites(slug, userId);
 
     return this.articleService.buildArticleResponse(art);
   }
 
-  @Delete(':slug/favourite')
+  @Delete(':slug/unfavorite')
   @UseGuards(UserGuardAuth)
-  async removeFromFavourites(
+  async removeFromFavorites(
     @User('id') userId: string,
     @Param('slug') slug: string,
   ): Promise<IArticleCommonResponse> {
-    const art = await this.articleService.removeFromFavourites(slug, userId);
+    const art = await this.articleService.removeFromFavorites(slug, userId);
 
     return this.articleService.buildArticleResponse(art);
   }

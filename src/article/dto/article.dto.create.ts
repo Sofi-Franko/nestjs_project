@@ -14,4 +14,4 @@ export class ArticleDtoCreate {
   tagList: string[];
 }
 
-export type ArticleDtoUpdate = Omit<ArticleDtoCreate, 'tagList'>;
+export type ArticleDtoUpdate = ArticleDtoCreate;

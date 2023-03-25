@@ -6,11 +6,9 @@ if (!process.env.IS_TS_NODE) {
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { useContainer } from 'class-validator';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  const app = await NestFactory.create(AppModule, { cors: true });
   await app.listen(3000);
 }
 bootstrap();

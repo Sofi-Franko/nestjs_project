@@ -63,10 +63,10 @@ export class ArticleService {
       });
     }
     // FAVORITED
-    if (query.favourited) {
+    if (query.favorited) {
       const user: UserEntity = await this.userRepository.findOne({
-        where: { username: query.favourited },
-        relations: ['favourites'],
+        where: { username: query.favorited },
+        relations: ['favorites'],
       });
 
       if (!user)
@@ -75,7 +75,7 @@ export class ArticleService {
           HttpStatus.NOT_FOUND,
         );
 
-      const ids: string[] = user.favourites.map((art) => art.id);
+      const ids: string[] = user.favorites.map((art) => art.id);
       if (ids.length) {
         queryBuilder.andWhere('articles.id IN (:...ids)', { ids });
       } else {
@@ -88,7 +88,7 @@ export class ArticleService {
     // SORT
     queryBuilder.orderBy('articles.createdAt', 'DESC');
 
-    const articles = await this.getArticlesExtendedWithFavouriteField(
+    const articles = await this.getArticlesExtendedWithFavoriteField(
       userId,
       queryBuilder,
     );
@@ -119,7 +119,7 @@ export class ArticleService {
     // SORT
     queryBuilder.orderBy('articles.createdAt', 'DESC');
 
-    const articles = await this.getArticlesExtendedWithFavouriteField(
+    const articles = await this.getArticlesExtendedWithFavoriteField(
       userId,
       queryBuilder,
     );
@@ -184,17 +184,17 @@ export class ArticleService {
     return this.articleRepository.save(article);
   }
 
-  async addToFavourites(slug: string, userId: string): Promise<ArticleEntity> {
+  async addToFavorites(slug: string, userId: string): Promise<ArticleEntity> {
     const article = await this.getBySlug(slug);
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['favourites'],
+      relations: ['favorites'],
     });
 
-    const isNotFav = this.getFavouriteArticleIndex(user, article) === -1;
+    const isNotFav = this.getFavoriteArticleIndex(user, article) === -1;
     if (isNotFav) {
-      user.favourites.push(article);
-      article.favouritesCount++;
+      user.favorites.push(article);
+      article.favoritesCount++;
 
       await this.userRepository.save(user);
       await this.articleRepository.save(article);
@@ -203,20 +203,20 @@ export class ArticleService {
     return article;
   }
 
-  async removeFromFavourites(
+  async removeFromFavorites(
     slug: string,
     userId: string,
   ): Promise<ArticleEntity> {
     const article = await this.getBySlug(slug);
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['favourites'],
+      relations: ['favorites'],
     });
 
-    const favIndex = this.getFavouriteArticleIndex(user, article);
+    const favIndex = this.getFavoriteArticleIndex(user, article);
     if (favIndex !== -1) {
-      user.favourites.splice(favIndex, 1);
-      article.favouritesCount--;
+      user.favorites.splice(favIndex, 1);
+      article.favoritesCount--;
 
       await this.userRepository.save(user);
       await this.articleRepository.save(article);
@@ -239,31 +239,31 @@ export class ArticleService {
     return slugFromTitle + '-' + getRandomPostfix();
   }
 
-  private getFavouriteArticleIndex(
+  private getFavoriteArticleIndex(
     user: UserEntity,
     art: ArticleEntity,
   ): number {
-    return user.favourites.findIndex((favArt) => favArt.id === art.id);
+    return user.favorites.findIndex((favArt) => favArt.id === art.id);
   }
 
-  private async getArticlesExtendedWithFavouriteField(
+  private async getArticlesExtendedWithFavoriteField(
     userId: string,
     queryBuilder: SelectQueryBuilder<ArticleEntity>,
   ): Promise<Article[]> {
-    let favouriteArticleIds: string[] = [];
+    let favoriteArticleIds: string[] = [];
     if (userId) {
       const user: UserEntity = await this.userRepository.findOne({
         where: { id: userId },
-        relations: ['favourites'],
+        relations: ['favorites'],
       });
 
-      favouriteArticleIds = user.favourites.map((fav) => fav.id);
+      favoriteArticleIds = user.favorites.map((fav) => fav.id);
     }
 
     const articles: ArticleEntity[] = await queryBuilder.getMany();
     return articles.map((art) => {
-      const isFavourited = favouriteArticleIds.includes(art.id);
-      return { ...art, favourited: isFavourited };
+      const isFavorited = favoriteArticleIds.includes(art.id);
+      return { ...art, favorited: isFavorited };
     });
   }
 }

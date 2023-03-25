@@ -28,7 +28,7 @@ export class ArticleEntity {
   tagList: string[];
 
   @Column({ default: 0 })
-  favouritesCount: number;
+  favoritesCount: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
